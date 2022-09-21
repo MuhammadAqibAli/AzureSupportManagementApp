@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Support Request";
+}
+<h3>Create a Support Request</h3>
+
+<table>
+    <tr>
+        <td><span class="ticket-heading">Description:</span> </td>
+        <td><textarea maxlength="1000" id="Description" name="Description" class="data-field"></textarea></td>
+
+        <td><span class="ticket-heading">Severity:</span></td>
+        <td>
+            <select id="Severity" name="Severity" class="data-field">
+                <option value="Minimal">Minimal</option>
+                <option value="Moderate">Moderate</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td> <span class="ticket-heading">Subscription:</span></td>
+        <td><select id="SubscriptionId" name="SubscriptionId" class="data-field"></select></td>
+
+        <td><span class="ticket-heading">Support Language:</span></td>
+        <td><input type="text" maxlength="50" id="PreferredSupportLanguage" name="PreferredSupportLanguage" value="en-US" class="data-field" /></td>
+    </tr>
+    <tr>
+        <td><span class="ticket-heading">Service Type:</span></td>
+        <td>
+            <select id="ServiceType" name="ServiceType" class="data-field">
+                <option value="billing">Billing</option>
+                <option value="service and subscription limits">Service and subscription limits</option>
+                <option value="subscription management">Subscription Management</option>
+                <option value="Technical">Technical</option>
+            </select>
+        </td>
+
+        <td><span class="ticket-heading">Preferred Contact Method:</span></td>
+        <td>
+            <select id="PreferredContactMethod" name="PreferredContactMethod" class="data-field">
+                <option value="email">Email</option>
+                <option value="mobile">Mobile</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td><span class="ticket-heading">Summary:</span></td>
+        <td><textarea maxlength="1000" id="Summary" name="Summary" class="data-field"></textarea></td>
+    </tr>
+    <tr>
+        <td><span class="ticket-heading">Problem Type:</span></td>
+        <td><select id="ProblemClassification" name="ProblemClassification" class="data-field"></select></td>
+    </tr>
+    <tr>
+        <td>
+            <br /><span class="ticket-heading">Additional Details </span> <br />
+            <span class="ticket-heading">When did the problem begin:<br /></span>
+        </td>
+        <td>
+            <br /> <br />Date: <input type="date" maxlength="50" id="ProblemStartDate" name="ProblemStartDate" />  Time:<input type="time" maxlength="50" id="ProblemStartTime" name="ProblemStartTime" />
+        </td>
+    </tr>
+</table>
+<br />
+<div class="row mb-1">
+    <div class="col-lg-6">
+        <button id="submit">Create Support Request</button>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+
+
+        $.ajax({
+            url: '/Home/GetSubscriptionList',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                debugger;
+                var list = JSON.parse(data);
+                var s = '';
+                for (var i = 0; i < list.length; i++) {
+                    s += '<option value="' + list[i].subscriptionId + '">' + list[i].displayName + '</option>';
+                }
+                $("#SubscriptionId").html(s);
+                getclassifications();
+            }
+        });
+
+        $('#ServiceType').change(function () {
+            getclassifications();
+        });
+
+        function getclassifications() {
+            var value = $('#ServiceType').val();
+            $.ajax({
+                url: '/Home/GetClassificationList/?serviceType=' + value,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var list = JSON.parse(data);
+                    var s = '';
+                    for (var i = 0; i < list.length; i++) {
+                        s += '<option value="' + list[i].name + '">' + list[i]['properties.displayName'] + '</option>';
+                    }
+                    $("#ProblemClassification").html(s);
+                }
+            });
+        }
+
+        $("#submit").click(function () {
+            $("#submit").html('Loading......');            
+            var data = {
+                Description: $('#Description').val(),
+                Severity: $('#Severity').val(),
+                SubscriptionId: $('#SubscriptionId').val(),
+                PreferredSupportLanguage: $('#PreferredSupportLanguage').val(),
+                ServiceType: $('#ServiceType').val(),
+                PreferredContactMethod: $('#PreferredContactMethod').val(),
+                Summary: $('#Summary').val(),
+                ProblemClassification: $('#ProblemClassification').val(),
+                ProblemStartDate: $('#ProblemStartDate').val(),
+                ProblemStartTime: $('#ProblemStartTime').val(),
+            };
+
+            $.post("/Home/CreateSupportRequest", { ticket: data },
+                function (data) {
+                    $("#submit").html('Create Support Request');
+                    console.log(data);
+                    alert(data.message)
+                });
+        });
+     
+
+
+    });
+
+</script>

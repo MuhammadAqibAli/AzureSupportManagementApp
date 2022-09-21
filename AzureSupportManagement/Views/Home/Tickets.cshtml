@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="mb-4">
+    <h1>Support Tickets</h1>
+    <b>Subscription: @ViewBag.subscriptionName</b>
+    <input type="hidden" value="@ViewBag.subscriptionId" />
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Support Request ID</th>
+            <th>Status</th>
+            <th>Severity</th>
+            <th>Created On</th>
+            <th>Created By</th>
+            <th>Support Plan</th>
+            <th>Contact Method</th>
+            <th>Subscription</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><a href="~/Home/TicketDetail?SupportTicketId=@item.SupportTicketId&Subscription=@ViewBag.subscriptionId">@item.SupportTicketId</a></td>
+                <td>@item.Status</td>
+                <td>@item.Severity</td>
+                <td>@item.CreatedDate</td>
+                <td>@item.ContactDetails.PrimaryEmailAddress</td>
+                <td>@item.SupportPlanType</td>
+                <td>
+                    @{@item.ContactDetails.PreferredContactMethod} -
+
+                    @{
+                        if (@item.ContactDetails.PreferredContactMethod == "Email")
+                        {
+                            @item.ContactDetails.PrimaryEmailAddress;
+                        }
+                        else
+                        {
+                            @item.ContactDetails.PhoneNumber
+                        }
+                    }
+                </td>
+                <td>@ViewBag.subscriptionName</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-lg-6">
+        
+    </div>
+    <div class="col-lg-3">
+        <p><a href="https://docs.microsoft.com/aspnet/core">Open Azure Help and Support </a></p>
+    </div>
+    <div class="col-lg-3">
+        <p><a href="~/Home/CreateTicket">Create a Support Ticket </a></p>
+    </div>
+</div>

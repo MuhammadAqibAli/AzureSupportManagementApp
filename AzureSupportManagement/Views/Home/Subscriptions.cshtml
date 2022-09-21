@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Subscriptions";
+
+}
+
+<div>
+    <h1>Subscription</h1>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Subscription ID</th>
+            <th>Display Name</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td> <a class="nav-link text-dark" href="~/Home/Index/@item.subscriptionId">@item.subscriptionId</a></td>
+                <td>@item.displayName</td>
+                <td>@item.state</td>                
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<div>
+    <p><a href="https://docs.microsoft.com/aspnet/core">Open Azure Help and Support </a></p>
+</div>
