@@ -191,20 +191,8 @@ namespace AzureSupportManagement.Services
             }
             return serviceName;
         }
-        private string GetClassificationName(string serviceName, string classification)
-        {
-            var rsp2 = GetProblemClassificationList(serviceName);
-            var problemClassificationName = string.Empty;
-            foreach (var problemClassification in rsp2)
-            {
-                if (problemClassification.DisplayName.ToLower().Contains(classification))
-                {
-                    problemClassificationName = problemClassification.Name;
-                    break;
-                }
-            }
-            return problemClassificationName;
-        }
+
+
         // Option 2: 
         //  1. Call services list api and find quota service name
         //  2. Call problem classification list api and find cores problem classification name

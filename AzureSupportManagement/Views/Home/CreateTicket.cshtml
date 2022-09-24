@@ -1,69 +1,97 @@
 ﻿@{
     ViewData["Title"] = "Support Request";
 }
-<h3>Create a Support Request</h3>
+<style>
+    table td {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+</style>
+<div id="form-body">
+    <h3>Create a Support Request</h3>
 
-<table>
-    <tr>
-        <td><span class="ticket-heading">Description:</span> </td>
-        <td><textarea maxlength="1000" id="Description" name="Description" class="data-field"></textarea></td>
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-dark spinner" id="loader" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <table>
+        <tr>
+            <td><span class="ticket-heading">Description:</span> </td>
+            <td style="padding-right: 10px;"><textarea maxlength="1000" id="Description" name="Description" class="data-field form-control"></textarea></td>
 
-        <td><span class="ticket-heading">Severity:</span></td>
-        <td>
-            <select id="Severity" name="Severity" class="data-field">
-                <option value="Minimal">Minimal</option>
-                <option value="Moderate">Moderate</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td> <span class="ticket-heading">Subscription:</span></td>
-        <td><select id="SubscriptionId" name="SubscriptionId" class="data-field"></select></td>
+            <td><span class="ticket-heading">Severity:</span></td>
+            <td>
+                <select id="Severity" name="Severity" class="data-field form-control">
+                    <option value="Minimal">Minimal</option>
+                    <option value="Moderate">Moderate</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td> <span class="ticket-heading">Subscription:</span></td>
+            <td style="padding-right: 10px;"><select id="SubscriptionId" name="SubscriptionId" class="data-field form-control"></select></td>
 
-        <td><span class="ticket-heading">Support Language:</span></td>
-        <td><input type="text" maxlength="50" id="PreferredSupportLanguage" name="PreferredSupportLanguage" value="en-US" class="data-field" /></td>
-    </tr>
-    <tr>
-        <td><span class="ticket-heading">Service Type:</span></td>
-        <td>
-            <select id="ServiceType" name="ServiceType" class="data-field">
-                <option value="billing">Billing</option>
-                <option value="service and subscription limits">Service and subscription limits</option>
-                <option value="subscription management">Subscription Management</option>
-                <option value="Technical">Technical</option>
-            </select>
-        </td>
+            <td><span class="ticket-heading">Support Language:</span></td>
+            <td><input type="text" maxlength="50" id="PreferredSupportLanguage" name="PreferredSupportLanguage" value="en-US" class="data-field form-control" /></td>
+        </tr>
+        <tr>
+            <td><span class="ticket-heading">Service Type:</span></td>
+            <td style="padding-right: 10px;">
+                <select id="ServiceType" name="ServiceType" class="data-field form-control">
+                    <option value="billing">Billing</option>
+                    <option value="service and subscription limits">Service and subscription limits</option>
+                    <option value="subscription management">Subscription Management</option>
+                    <option value="Technical">Technical</option>
+                </select>
+            </td>
 
-        <td><span class="ticket-heading">Preferred Contact Method:</span></td>
-        <td>
-            <select id="PreferredContactMethod" name="PreferredContactMethod" class="data-field">
-                <option value="email">Email</option>
-                <option value="mobile">Mobile</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td><span class="ticket-heading">Summary:</span></td>
-        <td><textarea maxlength="1000" id="Summary" name="Summary" class="data-field"></textarea></td>
-    </tr>
-    <tr>
-        <td><span class="ticket-heading">Problem Type:</span></td>
-        <td><select id="ProblemClassification" name="ProblemClassification" class="data-field"></select></td>
-    </tr>
-    <tr>
-        <td>
-            <br /><span class="ticket-heading">Additional Details </span> <br />
-            <span class="ticket-heading">When did the problem begin:<br /></span>
-        </td>
-        <td>
-            <br /> <br />Date: <input type="date" maxlength="50" id="ProblemStartDate" name="ProblemStartDate" />  Time:<input type="time" maxlength="50" id="ProblemStartTime" name="ProblemStartTime" />
-        </td>
-    </tr>
-</table>
-<br />
+            <td><span class="ticket-heading">Preferred Contact Method:</span></td>
+            <td>
+                <select id="PreferredContactMethod" name="PreferredContactMethod" class="data-field form-control">
+                    <option value="email">Email</option>
+                    <option value="mobile">Mobile</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="ticket-heading">Summary:</span></td>
+            <td><textarea maxlength="1000" id="Summary" name="Summary" class="data-field form-control"></textarea></td>
+        </tr>
+        <tr>
+            <td><span class="ticket-heading">Problem Type:</span></td>
+            <td><select id="ProblemClassification" name="ProblemClassification" class="data-field form-control"></select></td>
+        </tr>
+        <tr>
+            <td>
+                <br /><span class="ticket-heading">Additional Details </span> <br />
+                <span class="ticket-heading">When did the problem begin:<br /></span>
+            </td>
+            <td colspan="3">
+                <br /> <br />
+                <div class="d-flex justify-content-start">
+                    <div class="time-text">
+                        Date:
+                    </div>
+                    <div  class="time-text">
+                        <input type="date" maxlength="50" id="ProblemStartDate" name="ProblemStartDate" class="form-control" />
+                    </div>
+                    <div  class="time-text">
+                        Time:
+                    </div>
+                    <div  class="time-text">
+                        <input type="time" maxlength="50" id="ProblemStartTime" name="ProblemStartTime" class="form-control" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+</div>
+
 <div class="row mb-1">
-    <div class="col-lg-6">
-        <button id="submit">Create Support Request</button>
+    <div class="col-lg-12">
+        <button id="submit" style="float:right;" class="btn btn-primary">Create Support Request</button>
     </div>
 </div>
 
@@ -71,14 +99,13 @@
 <script>
     $(document).ready(function () {
 
-
+        showLoader();
         $.ajax({
             url: '/Home/GetSubscriptionList',
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log(data)
-                debugger;
+
                 var list = JSON.parse(data);
                 var s = '';
                 for (var i = 0; i < list.length; i++) {
@@ -86,6 +113,7 @@
                 }
                 $("#SubscriptionId").html(s);
                 getclassifications();
+                hideLoader();
             }
         });
 
@@ -94,6 +122,7 @@
         });
 
         function getclassifications() {
+            showLoader();
             var value = $('#ServiceType').val();
             $.ajax({
                 url: '/Home/GetClassificationList/?serviceType=' + value,
@@ -106,12 +135,14 @@
                         s += '<option value="' + list[i].name + '">' + list[i]['properties.displayName'] + '</option>';
                     }
                     $("#ProblemClassification").html(s);
+                    hideLoader();
                 }
             });
         }
 
         $("#submit").click(function () {
-            $("#submit").html('Loading......');            
+            showLoader();
+            $("#submit").html('Loading......');
             var data = {
                 Description: $('#Description').val(),
                 Severity: $('#Severity').val(),
@@ -128,11 +159,11 @@
             $.post("/Home/CreateSupportRequest", { ticket: data },
                 function (data) {
                     $("#submit").html('Create Support Request');
-                    console.log(data);
+                    hideLoader();
                     alert(data.message)
                 });
         });
-     
+
 
 
     });

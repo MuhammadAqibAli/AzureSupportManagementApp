@@ -79,3 +79,33 @@ body {
 .data-field{
     width:300px;
 }
+.loading-background {
+    background-color: #f1f3f4e8;
+}
+#form-body {
+   padding: 10px;
+}
+
+.spinner {
+    margin-top: 100px;
+    position: absolute;
+}
+.modal-spinner {
+    margin-top: 50px;
+    position: absolute;
+}
+.time-text {
+    margin-left: 10px;
+}
+
+.spinner-border {
+    display: inline-block;
+    width: 4rem !important;
+    height: 4rem !important;
+    vertical-align: text-bottom;
+    border: 0.35em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border .75s linear infinite;
+    animation: spinner-border .75s linear infinite;
+}

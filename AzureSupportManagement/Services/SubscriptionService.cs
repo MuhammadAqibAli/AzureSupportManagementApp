@@ -39,54 +39,6 @@ namespace AzureSupportManagement.Services
             }
             return subscriptions;
 
-        }
-        //    try
-        //{
-        //        var ctx = new AuthenticationContext("https://login.microsoftonline.com/common");
-        //        // This will show the login window
-        //        var mainAuthRes = ctx.AcquireToken(m_resource, m_clientId, new Uri(m_redirectURI), PromptBehavior.Always);
-        //        var subscriptionCredentials = new TokenCloudCredentials(mainAuthRes.AccessToken);
-        //        var cancelToken = new CancellationToken();
-        //        using (var subscriptionClient = new SubscriptionClient(subscriptionCredentials))
-        //        {
-        //            var tenants = subscriptionClient.Tenants.ListAsync(cancelToken).Result;
-        //            foreach (var tenantDescription in tenants.TenantIds)
-        //            {
-        //                var tenantCtx = new AuthenticationContext("https://login.microsoftonline.com/" + tenantDescription.TenantId);
-        //                // This will NOT show the login window
-        //                var tenantAuthRes = tenantCtx.AcquireToken(
-        //                    m_resource,
-        //                    m_clientId,
-        //                    new Uri(m_redirectURI),
-        //                    PromptBehavior.Never,
-        //                    new UserIdentifier(mainAuthRes.UserInfo.DisplayableId, UserIdentifierType.RequiredDisplayableId));
-        //                var tenantTokenCreds = new TokenCloudCredentials(tenantAuthRes.AccessToken);
-        //                using (var tenantSubscriptionClient = new SubscriptionClient(tenantTokenCreds))
-        //                {
-        //                    var tenantSubscriptioins = tenantSubscriptionClient.Subscriptions.ListAsync(cancelToken).Result;
-        //                    foreach (var sub in tenantSubscriptioins.Subscriptions)
-        //                    {
-        //                        Console.WriteLine($"SubscriptionName : {sub.DisplayName}");
-        //                        Console.WriteLine($"SubscriptionId   : {sub.SubscriptionId}");
-        //                        Console.WriteLine($"TenantId         : {tenantDescription.TenantId}");
-        //                        Console.WriteLine($"State            : {sub.State}");
-        //                        Console.WriteLine();
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //catch (Exception ex)
-        //{
-        //    Console.WriteLine(ex.ToString());
-        //}
-        //finally
-        //{
-        //    Console.WriteLine("press something");
-        //    Console.ReadLine();
-        //}
-        //}
-
-
+        }       
     }
 }
