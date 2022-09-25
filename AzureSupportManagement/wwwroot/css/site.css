@@ -100,10 +100,10 @@ body {
 
 .spinner-border {
     display: inline-block;
-    width: 4rem !important;
-    height: 4rem !important;
+    width: 3rem !important;
+    height: 3rem !important;
     vertical-align: text-bottom;
-    border: 0.35em solid currentColor;
+    border: 0.30em solid currentColor;
     border-right-color: transparent;
     border-radius: 50%;
     -webkit-animation: spinner-border .75s linear infinite;

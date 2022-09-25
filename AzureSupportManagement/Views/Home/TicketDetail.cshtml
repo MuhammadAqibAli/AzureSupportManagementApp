@@ -120,6 +120,7 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="subscriptionId" value="@ViewBag.subscriptionId"/>
 <script src="~/lib/jquery/dist/jquery.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
@@ -128,14 +129,17 @@
         $("#closeTicket").click(function () {
             showLoader();
             $("#closeTicket").html('Loading......');
+            $("#closeTicket").attr("disabled", true);
             var data = {
                 TicketName: $('#ticketName').val(),
                 Status: 'closed',
+                SubscriptionId: $('#subscriptionId').val(),
             };
 
             $.post("/Home/UpdateTicketStatus", { ticket: data },
                 function (data) {
                     $("#closeTicket").html('Close Ticket');
+                    $("#closeTicket").attr("disabled", false);
                     hideLoader();
                     alert(data.message)
                 });
@@ -147,14 +151,17 @@
             $('#modal-loader').show();
 
             $("#createCommunication").html('Loading......');
+            $("#createCommunication").attr("disabled", true);
             var data = {
                 TicketName: $('#ticketName').val(),
                 Subject: $('#Subject').val(),
                 Body: $('#Body').val(),
+                SubscriptionId: $('#subscriptionId').val(),
             };
 
             $.post("/Home/CreateCommunication", { communication: data },
                 function (data) {
+                    $("#createCommunication").attr("disabled", false);
                     $("#createCommunication").html('Save');
                     $('#form-body').removeClass('loading-background');
                     $('#modal-loader').hide();

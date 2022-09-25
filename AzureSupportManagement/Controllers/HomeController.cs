@@ -51,7 +51,6 @@ namespace AzureSupportManagement.Controllers
             {
                 return View(data.Where(x => x.SupportTicketId == SupportTicketId).FirstOrDefault());
             }
-
             return View();
         }
 
@@ -72,9 +71,9 @@ namespace AzureSupportManagement.Controllers
             return Json(JsonConvert.SerializeObject(subscriptions.ToArray()));
         }
 
-        public ActionResult GetClassificationList(string serviceType)
+        public ActionResult GetClassificationList(string serviceType, string subscriptionId)
         {
-            var classifications = _supportService.GetProblemClassifications(serviceType);
+            var classifications = _supportService.GetProblemClassifications(serviceType, subscriptionId);
             return Json(JsonConvert.SerializeObject(classifications.ToArray()));
         }
 
@@ -101,11 +100,6 @@ namespace AzureSupportManagement.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
     }

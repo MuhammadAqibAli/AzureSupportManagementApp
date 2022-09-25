@@ -125,7 +125,7 @@
             showLoader();
             var value = $('#ServiceType').val();
             $.ajax({
-                url: '/Home/GetClassificationList/?serviceType=' + value,
+                url: '/Home/GetClassificationList/?serviceType=' + value + '&subscriptionId=' + $('#SubscriptionId').val(),
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
@@ -143,6 +143,7 @@
         $("#submit").click(function () {
             showLoader();
             $("#submit").html('Loading......');
+            $("#submit").attr("disabled", true);
             var data = {
                 Description: $('#Description').val(),
                 Severity: $('#Severity').val(),
@@ -158,6 +159,7 @@
 
             $.post("/Home/CreateSupportRequest", { ticket: data },
                 function (data) {
+                    $("#submit").attr("disabled", false);
                     $("#submit").html('Create Support Request');
                     hideLoader();
                     alert(data.message)

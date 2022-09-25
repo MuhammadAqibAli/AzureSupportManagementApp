@@ -11,7 +11,7 @@ namespace AzureSupportManagement.Interface
     {
         List<SupportTicketDetails> GetSupportTicketList(string subscriptionId, int? top = null, string filter = null);
 
-        List<ProblemClassification> GetProblemClassifications(string serviceType);
+        List<ProblemClassification> GetProblemClassifications(string serviceType, string subscriptionId);
 
         BaseResponse CreateTicket(Ticket ticket);
 

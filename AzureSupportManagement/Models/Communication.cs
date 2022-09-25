@@ -11,5 +11,7 @@ namespace AzureSupportManagement.Models
         public string Sender { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
+
+        public string SubscriptionId { get; set; }
     }
 }

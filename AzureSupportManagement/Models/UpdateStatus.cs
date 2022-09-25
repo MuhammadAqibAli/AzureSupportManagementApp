@@ -9,5 +9,7 @@ namespace AzureSupportManagement.Models
     {
         public string TicketName { get; set; }
         public string Status { get; set; }
+
+        public string SubscriptionId { get; set; }
     }
 }
