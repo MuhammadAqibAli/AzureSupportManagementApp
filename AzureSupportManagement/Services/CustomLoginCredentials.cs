@@ -9,9 +9,6 @@ namespace AzureSupportManagement.Services
 {
     public class CustomLoginCredentials : ServiceClientCredentials
     {
-        // Generate auth token using armclient (https://github.com/projectkudu/ARMClient)
-        // Or using your own custom authentication/authorization implementation.
-        // You can use token acquired for a user or a service principal for the arm audience https://management.azure.com/ 
         private string AUTHTOKEN = "";
 
         public CustomLoginCredentials(string token)

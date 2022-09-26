@@ -2,6 +2,7 @@
 using AzureSupportManagement.Models;
 using Microsoft.Azure.Management.Support;
 using Microsoft.Azure.Management.Support.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,17 +15,19 @@ namespace AzureSupportManagement.Services
     public class SupportService : ISupportService
     {
         private readonly IAuthenticationService _authenticationService;
-        private const string TICKETNAMEPREFIX = "ApiDemoApp_{0}_{1}";
+        private string TICKETNAMEPREFIX = "";
         private static CustomLoginCredentials serviceClientCredentials;
         private static MicrosoftSupportClient supportClient;
-
-        public SupportService(IAuthenticationService authenticationService)
+        public IConfiguration _configuration;
+        public SupportService(IAuthenticationService authenticationService, IConfiguration configuration)
         {
             _authenticationService = authenticationService;
+            _configuration = configuration;
             initialize();
         }
         private void initialize()
         {
+            TICKETNAMEPREFIX = _configuration.GetValue<string>("TICKETNAMEPREFIX");
             string token = _authenticationService.GetToken(false);
             serviceClientCredentials = new CustomLoginCredentials(token);
             supportClient = new MicrosoftSupportClient(serviceClientCredentials);
@@ -86,6 +89,9 @@ namespace AzureSupportManagement.Services
                     });
                 } while (!rsp3);
 
+                string userName = _configuration.GetValue<string>("UserEmail");
+                string PreferredTimeZone = _configuration.GetValue<string>("PreferredTimeZone");
+                string Country = _configuration.GetValue<string>("Country");
                 //Create Ticket
                 var inputPayload = new SupportTicketDetails()
                 {
@@ -94,17 +100,17 @@ namespace AzureSupportManagement.Services
                     Description = ticket.Description,
                     ContactDetails = new ContactProfile()
                     {
-                        FirstName = "supportuser@riniehuijgenhotmail.onmicrosoft.com",
+                        FirstName = userName,
                         LastName = "B",
-                        PrimaryEmailAddress = "supportuser@riniehuijgenhotmail.onmicrosoft.com",
+                        PrimaryEmailAddress = userName,
                         PreferredContactMethod = ticket.PreferredContactMethod,
-                        PreferredTimeZone = "Pacific Standard Time",
+                        PreferredTimeZone = PreferredTimeZone,
                         PreferredSupportLanguage = ticket.PreferredSupportLanguage,
-                        Country = "usa"
+                        Country = Country
                     }
                 };
                 inputPayload.ServiceId = "/providers/Microsoft.Support/services/" + serviceName;
-                inputPayload.ProblemClassificationId = "/providers/Microsoft.Support/services/" + serviceName + "/problemClassifications/" + ticket.ProblemClassification;                
+                inputPayload.ProblemClassificationId = "/providers/Microsoft.Support/services/" + serviceName + "/problemClassifications/" + ticket.ProblemClassification;
                 var rsp = supportClient.SupportTickets.Create(randomTicketName, inputPayload);
                 response.Success = true;
                 response.Message = JsonConvert.SerializeObject(rsp);
@@ -130,10 +136,10 @@ namespace AzureSupportManagement.Services
                     Name = randomTicketCommunicationName,
                     Type = Type.MicrosoftSupportCommunications
                 });
-                
+                string userName = _configuration.GetValue<string>("UserEmail");
                 var rsp = supportClient.Communications.Create(communication.TicketName, randomTicketCommunicationName, new CommunicationDetails()
                 {
-                    Sender = "supportuser@riniehuijgenhotmail.onmicrosoft.com",
+                    Sender = userName,
                     Subject = communication.Subject,
                     Body = communication.Body
                 });
@@ -156,7 +162,7 @@ namespace AzureSupportManagement.Services
                 var updatePayload = new UpdateSupportTicket()
                 {
                     Status = ticket.Status
-                };                
+                };
                 var rsp = supportClient.SupportTickets.Update(ticket.TicketName, updatePayload);
                 response.Message = JsonConvert.SerializeObject(rsp);
             }
@@ -189,7 +195,7 @@ namespace AzureSupportManagement.Services
         }
 
         private static List<ProblemClassification> GetProblemClassificationList(string serviceName)
-        {            
+        {
             return supportClient.ProblemClassifications.List(serviceName).ToList();
         }
 
@@ -217,7 +223,5 @@ namespace AzureSupportManagement.Services
                 return false;
             }
         }
-
-
     }
 }

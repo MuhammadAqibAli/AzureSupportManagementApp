@@ -1,6 +1,7 @@
 ﻿
 using AzureSupportManagement.Interface;
 using AzureSupportManagement.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -13,9 +14,12 @@ namespace AzureSupportManagement.Services
     public class SubscriptionService: ISubscriptionService
     {
         private readonly IAuthenticationService _authenticationService;
-        public SubscriptionService(IAuthenticationService authenticationService)
+        public IConfiguration _configuration;
+
+        public SubscriptionService(IAuthenticationService authenticationService, IConfiguration configuration)
         {
             _authenticationService = authenticationService;
+            _configuration = configuration;
         }
 
         public List<Subscription> GetSubscriptions()
@@ -26,7 +30,8 @@ namespace AzureSupportManagement.Services
                 string token = _authenticationService.GetToken(false);
                 HttpClient client = new HttpClient();                
                 client.DefaultRequestHeaders.Add("Authorization", $"bearer {token}");
-                var subcription = client.GetStringAsync("https://management.azure.com/subscriptions?api-version=2014-04-01-preview").Result;
+                string subscriptionEndpoint=_configuration.GetValue<string>("SubscriptionEndpoint");
+                var subcription = client.GetStringAsync(subscriptionEndpoint).Result;
                 var v=JObject.Parse(subcription)["value"];
                 subscriptions = JsonConvert.DeserializeObject<List<Subscription>>(v.ToString());                
             }
